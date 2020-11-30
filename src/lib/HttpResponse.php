@@ -12,7 +12,7 @@ class HttpResponse extends InstanceClass implements InstanceInterface
             'error'     => $error,
             'message'   => $message,
             'status'    => $status,
-            'dataset'   => $data,
+            'data'      => $data,
             'timestamp' => time()
         ], JSON_UNESCAPED_UNICODE);
     }
