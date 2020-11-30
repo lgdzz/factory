@@ -4,6 +4,8 @@ namespace lgdz\lib\workerman;
 
 trait SendToUser
 {
+    use BuildTarget;
+
     /**
      * @param mixed $uid 可以是字符串、数字、或者包含uid的数组。如果为数组，则是给数组内所有uid发送数据
      * @param array $body
@@ -29,7 +31,7 @@ trait SendToUser
     private function common(string $method, $target, array $body, \Closure $callback = null)
     {
         $args = [
-            $target,
+            $this->target($target),
             [
                 'fromUser' => 'system',
                 'body'     => $body
