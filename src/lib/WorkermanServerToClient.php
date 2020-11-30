@@ -50,7 +50,7 @@ class WorkermanServerToClient extends InstanceClass implements InstanceInterface
     public function send(string $method, array $body, Closure $callback = null)
     {
         $data = ['appid' => $this->appid, 'method' => $method, 'args' => $body, 'timestamp' => time()];
-        $this->sign($body);
+        $this->sign($data);
         $response = $this->factory->HttpRequest()->post($this->gateway, $data);
         if (!isset($response->error)) {
             throw new Exception('接口请求失败');
