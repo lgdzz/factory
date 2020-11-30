@@ -47,7 +47,7 @@ class WorkermanServerToClient extends InstanceClass implements InstanceInterface
      * @return mixed
      * @throws Exception
      */
-    public function send(string $method, array $body, Closure $callback)
+    public function send(string $method, array $body, Closure $callback = null)
     {
         $this->sign($body);
         $response = $this->factory->HttpRequest()->post($this->gateway, ['method' => $method, 'body' => $body]);
@@ -56,7 +56,9 @@ class WorkermanServerToClient extends InstanceClass implements InstanceInterface
         } elseif ($response->error !== 0) {
             throw new Exception($response->message);
         } else {
-            return $callback($response->dataset);
+            if (!is_null($callback)) {
+                return $callback($response);
+            }
         }
     }
 
