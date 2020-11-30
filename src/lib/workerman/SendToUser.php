@@ -33,8 +33,9 @@ trait SendToUser
         $args = [
             $this->target($target),
             [
-                'fromUser' => 'system',
-                'body'     => $body
+                'fromUser'  => 'system',
+                'body'      => $body,
+                'timestamp' => time()
             ]
         ];
         return $this->send($method, $args, $callback);
