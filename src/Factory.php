@@ -17,7 +17,7 @@ use lgdz\lib\InstanceInterface;
  */
 class Factory
 {
-    // 单一实体缓存
+    // 单例
     private $entity = [];
 
     public function __call($name, $arguments)
