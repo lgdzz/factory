@@ -32,11 +32,11 @@ trait SendToUser
     {
         $args = [
             $this->target($target),
-            [
+            json_encode([
                 'fromUser'  => 'system',
                 'body'      => $body,
                 'timestamp' => time()
-            ]
+            ])
         ];
         return $this->send($method, $args, $callback);
     }
