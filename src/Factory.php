@@ -13,6 +13,7 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\DataAuth DataAuth(string $secret);
  * @method \lgdz\lib\Helper Helper();
  * @method \lgdz\lib\WorkermanServerToClient WorkermanServerToClient(string $appid, string $secret, string $gateway);
+ * @method \lgdz\lib\WorkermanClientToServer WorkermanClientToServer(string $secret);
  * @package lgdz
  */
 class Factory
