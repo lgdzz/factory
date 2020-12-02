@@ -36,7 +36,7 @@ trait SendToUser
                 'fromUser'  => 'system',
                 'body'      => $body,
                 'timestamp' => time()
-            ])
+            ], JSON_UNESCAPED_UNICODE)
         ];
         return $this->send($method, $args, $callback);
     }
