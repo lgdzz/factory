@@ -6,7 +6,7 @@ namespace lgdz\lib;
 
 use Firebase\JWT\{JWT, ExpiredException, SignatureInvalidException};
 use Redis;
-use Exception;
+use lgdz\exception\JwtAuthException;
 
 class JwtAuth extends InstanceClass implements InstanceInterface
 {
@@ -39,12 +39,12 @@ class JwtAuth extends InstanceClass implements InstanceInterface
     }
 
     /**
-     * @throws Exception
+     * @throws JwtAuthException
      */
     private function checkRedis()
     {
         if (is_null($this->redis)) {
-            throw new Exception('未调用setRedis方法');
+            throw new JwtAuthException('未调用setRedis方法');
         }
     }
 
@@ -54,7 +54,7 @@ class JwtAuth extends InstanceClass implements InstanceInterface
      * @param array $body 附加额外数据
      * @param int $expire 过期时间（秒）
      * @return array
-     * @throws Exception
+     * @throws JwtAuthException
      */
     public function issue(int $uid, array $body = [], int $expire = 86400): array
     {
@@ -77,18 +77,18 @@ class JwtAuth extends InstanceClass implements InstanceInterface
      * @param string $Authorization
      * @param bool $checkTicket
      * @return mixed
-     * @throws Exception
+     * @throws JwtAuthException
      */
     public function check(string $Authorization, bool $checkTicket = false)
     {
         try {
             $decoded = JWT::decode($Authorization, $this->secret, array('HS256'));
         } catch (SignatureInvalidException $e) {
-            throw new Exception('签名失败');
+            throw new JwtAuthException('签名失败');
         } catch (ExpiredException $e) {
-            throw new Exception('登录凭证过期');
+            throw new JwtAuthException('登录凭证过期');
         } catch (\Throwable $e) {
-            throw new Exception($e->getMessage());
+            throw new JwtAuthException($e->getMessage());
         }
         // ticket验证
         if ($checkTicket) {
@@ -96,13 +96,13 @@ class JwtAuth extends InstanceClass implements InstanceInterface
             $this->checkRedis();
             $payload = $this->redis->hGet($this->ticket_key, (string)$uid);
             if (!$payload) {
-                throw new Exception('ticket失效，请重新登录');
+                throw new JwtAuthException('ticket失效，请重新登录');
             }
             $payload = unserialize($payload);
             if ($payload['body']['ticket'] !== $decoded->body->ticket) {
-                throw new Exception('ticket失效，请重新登录');
+                throw new JwtAuthException('ticket失效，请重新登录');
             } elseif ($decoded->exp < time()) {
-                throw new Exception('ticket过期，请重新登录');
+                throw new JwtAuthException('ticket过期，请重新登录');
             }
         }
         return $decoded->body;
