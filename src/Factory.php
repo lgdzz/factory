@@ -14,6 +14,7 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\Helper Helper();
  * @method \lgdz\lib\WorkermanServerToClient WorkermanServerToClient(string $appid, string $secret, string $gateway);
  * @method \lgdz\lib\WorkermanClientToServer WorkermanClientToServer(string $secret);
+ * @method \lgdz\lib\JwtAuth JwtAuth(array $config);
  * @package lgdz
  */
 class Factory

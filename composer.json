@@ -8,7 +8,9 @@
   "require": {
     "php": ">=7.0",
     "ext-json": "*",
-    "php-curl-class/php-curl-class": "^8.6"
+    "ext-redis": "*",
+    "php-curl-class/php-curl-class": "^8.6",
+    "firebase/php-jwt": "^5.2",
   },
   "autoload": {
     "psr-4": {
