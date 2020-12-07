@@ -53,7 +53,7 @@ class Components extends InstanceClass implements InstanceInterface
                 continue;
             } else {
                 try {
-                    if ($this->registers[0] !== '*' && !in_array($op, $this->registers))
+                    if (empty($this->registers) || ($this->registers[0] !== '*' && !in_array($op, $this->registers)))
                         throw new \Exception('未在Registers中注册');
                     elseif (is_null($this->entity))
                         throw new \Exception('未初始化Entity');
