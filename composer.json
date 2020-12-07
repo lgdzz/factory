@@ -10,7 +10,7 @@
     "ext-json": "*",
     "ext-redis": "*",
     "php-curl-class/php-curl-class": "^8.6",
-    "firebase/php-jwt": "^5.2",
+    "firebase/php-jwt": "^5.2"
   },
   "autoload": {
     "psr-4": {
