@@ -18,7 +18,7 @@ class JwtAuth extends InstanceClass implements InstanceInterface
      * redis操作实例
      * @var Redis
      */
-    private $redis;
+    private $redis = null;
 
     /**
      * JwtAuth constructor.
@@ -28,7 +28,24 @@ class JwtAuth extends InstanceClass implements InstanceInterface
     {
         if (isset($config['secret'])) $this->secret = $config['secret'];
         if (isset($config['ticket_key'])) $this->ticket_key = $config['ticket_key'];
-        if (isset($config['redis'])) $this->redis = $config['redis'];
+    }
+
+    /**
+     * @param Redis $redis
+     */
+    public function setRedis($redis)
+    {
+        $this->redis = $redis;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function checkRedis()
+    {
+        if (is_null($this->redis)) {
+            throw new Exception('未调用setRedis方法');
+        }
     }
 
     /**
@@ -37,6 +54,7 @@ class JwtAuth extends InstanceClass implements InstanceInterface
      * @param array $body 附加额外数据
      * @param int $expire 过期时间（秒）
      * @return array
+     * @throws Exception
      */
     public function issue(int $uid, array $body = [], int $expire = 86400): array
     {
@@ -49,6 +67,7 @@ class JwtAuth extends InstanceClass implements InstanceInterface
             'exp'  => $timestamp,
             'body' => array_merge(['uid' => $uid, 'ticket' => $this->factory->Helper()->randomString(50)], $body)
         ];
+        $this->checkRedis();
         $this->redis->hSet($this->ticket_key, (string)$uid, serialize($payload));
         return [JWT::encode($payload, $this->secret), date('Y-m-d H:i:s', $timestamp)];
     }
@@ -73,7 +92,8 @@ class JwtAuth extends InstanceClass implements InstanceInterface
         }
         // ticket验证
         if ($checkTicket) {
-            $uid     = $decoded->body->uid;
+            $uid = $decoded->body->uid;
+            $this->checkRedis();
             $payload = $this->redis->hGet($this->ticket_key, (string)$uid);
             if (!$payload) {
                 throw new Exception('ticket失效，请重新登录');
