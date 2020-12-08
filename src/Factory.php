@@ -16,6 +16,7 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\WorkermanClientToServer WorkermanClientToServer(string $secret);
  * @method \lgdz\lib\JwtAuth JwtAuth(array $config);
  * @method \lgdz\lib\Components Components();
+ * @method \lgdz\lib\Tree Tree();
  * @package lgdz
  */
 class Factory
