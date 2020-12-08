@@ -47,11 +47,12 @@ class Components extends InstanceClass implements InstanceInterface
                 continue;
             } else {
                 try {
-                    print_r($this->registers);
-                    if (empty($this->registers) || ($this->registers[0] !== '*' && !in_array($op, $this->registers)))
-                        throw new \Exception('未在Registers中注册');
-                    elseif (is_null($this->entity))
+                    if (is_null($this->entity))
                         throw new \Exception('未初始化Entity');
+                    elseif (empty($this->registers) || ($this->registers[0] !== '*' && !in_array($op, $this->registers)))
+                        throw new \Exception('未在Registers中注册');
+                    elseif (!method_exists($this->entity, $op))
+                        throw new \Exception("Entity中没有找到{$op}方法");
                     else
                         $components[$op] = $this->entity->$op(...$args);
                 } catch (\Throwable $e) {
