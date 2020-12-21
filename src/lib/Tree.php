@@ -9,7 +9,7 @@ class Tree extends InstanceClass implements InstanceInterface
         $tmp = [];
         foreach ($list as $row) {
             if ($row[$pid] !== $id) continue;
-            $children = $this->tree($list, $row['id']);
+            $children = $this->tree($list, $row['id'], $pid);
             if ($children) {
                 $row['has_child'] = true;
                 $row['children']  = $children;
