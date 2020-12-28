@@ -10,7 +10,6 @@ class HttpRequest extends InstanceClass implements InstanceInterface
 {
     public function get(string $url, array $data = [], \Closure $before = null, \Closure $after = null)
     {
-        print_r($this->getFactory());
         return $this->box($before, $after, function (Curl $curl) use ($url, $data) {
             return $curl->get($url, $data);
         });
