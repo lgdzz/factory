@@ -41,7 +41,7 @@ class HttpRequest extends InstanceClass implements InstanceInterface
     {
         try {
             $curl = new Curl();
-            $curl->setHeader('content-type', 'application/json;charset=UTF-8');
+            $curl->setHeader('Content-Type', 'application/json;charset=UTF-8');
             $curl->setTimeout(10);
             !is_null($before) && $before($curl);
             $request($curl);
