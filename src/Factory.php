@@ -17,6 +17,7 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\JwtAuth JwtAuth(array $config);
  * @method \lgdz\lib\Components Components();
  * @method \lgdz\lib\Tree Tree();
+ * @method \lgdz\lib\Time Time();
  * @package lgdz
  */
 class Factory
