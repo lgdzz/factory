@@ -18,6 +18,8 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\Components Components();
  * @method \lgdz\lib\Tree Tree();
  * @method \lgdz\lib\Time Time();
+ * @method \lgdz\lib\Captcha Captcha();
+ * @method \lgdz\lib\Pinyin Pinyin();
  * @package lgdz
  */
 class Factory
