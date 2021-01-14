@@ -4,10 +4,21 @@ declare (strict_types=1);
 
 namespace lgdz\lib;
 
+use lgdz\exception\CaptchaException;
+
 class Captcha extends InstanceClass implements InstanceInterface
 {
-    public function build(\Closure $callback)
+    private $secret = '';
+
+    public function setSecret($secret)
     {
+        $this->secret = $secret;
+        return $this;
+    }
+
+    public function build(): array
+    {
+        ob_start();
         $image   = imagecreatetruecolor(100, 30);
         $bgcolor = imagecolorallocate($image, 255, 255, 255);
         imagefill($image, 0, 0, $bgcolor);
@@ -35,9 +46,39 @@ class Captcha extends InstanceClass implements InstanceInterface
             $linecolor = imagecolorallocate($image, mt_rand(50, 200), mt_rand(50, 200), mt_rand(50, 200));
             imageline($image, mt_rand(1, 99), mt_rand(1, 29), mt_rand(1, 99), mt_rand(1, 29), $linecolor);
         }
-        $callback($captcha);
-        header('content-type:image/png');
         imagepng($image);
         imagedestroy($image);
+        $data      = ob_get_clean();
+        $uuid      = $this->factory->Helper()->randomString(32);
+        $timestamp = time();
+        return [
+            'captcha' => 'data:image/png;base64,' . base64_encode($data),
+            'input'   => [
+                'timestamp' => $timestamp,
+                'uuid'      => $uuid,
+                'check'     => $this->encode($captcha, $uuid, $timestamp),
+                'code'      => ''
+            ]
+        ];
+    }
+
+    public function check(array $input): void
+    {
+        $timestamp = $input['timestamp'] ?? null;
+        $uuid      = $input['uuid'] ?? null;
+        $check     = $input['check'] ?? null;
+        $code      = $input['code'] ?? null;
+        if (is_null($timestamp) || is_null($uuid) || is_null($check) || is_null($code)) {
+            throw new CaptchaException('验证码参数不完整');
+        } elseif (($timestamp + 300) <= time()) {
+            throw new CaptchaException('验证码已失效');
+        } elseif ($check !== $this->encode($code, $uuid, $timestamp)) {
+            throw new CaptchaException('验证码不正确');
+        }
+    }
+
+    private function encode($captcha, $uuid, $timestamp)
+    {
+        return md5(md5(strtolower($captcha) . $uuid . $timestamp) . $this->secret);
     }
 }
