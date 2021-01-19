@@ -9,10 +9,23 @@ use lgdz\exception\CaptchaException;
 class Captcha extends InstanceClass implements InstanceInterface
 {
     private $secret = '';
+    private $content = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     public function setSecret($secret)
     {
         $this->secret = $secret;
+        return $this;
+    }
+
+    public function setContent(string $content)
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    public function setLevelEasy()
+    {
+        $this->content = '0123456789';
         return $this;
     }
 
@@ -22,7 +35,7 @@ class Captcha extends InstanceClass implements InstanceInterface
         $image   = imagecreatetruecolor(100, 30);
         $bgcolor = imagecolorallocate($image, 255, 255, 255);
         imagefill($image, 0, 0, $bgcolor);
-        $content = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        $content = $this->content;
         $captcha = '';
         for ($i = 0; $i < 4; $i++) {
             // 字体大小
