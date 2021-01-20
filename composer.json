@@ -4,15 +4,16 @@
   "description": "tools class",
   "type": "library",
   "license": "MIT",
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.2",
     "ext-json": "*",
     "ext-redis": "*",
     "ext-gd": "*",
     "php-curl-class/php-curl-class": "^8.6",
     "firebase/php-jwt": "^5.2",
-    "overtrue/pinyin": "^4.0"
+    "overtrue/pinyin": "^4.0",
+    "dragonmantank/cron-expression": "^3.1"
   },
   "autoload": {
     "psr-4": {
