@@ -20,6 +20,7 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\Time Time();
  * @method \lgdz\lib\Captcha Captcha();
  * @method \lgdz\lib\Pinyin Pinyin();
+ * @method \lgdz\lib\Queue Queue();
  * @package lgdz
  */
 class Factory
