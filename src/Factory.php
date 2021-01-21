@@ -20,7 +20,7 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\Time Time();
  * @method \lgdz\lib\Captcha Captcha();
  * @method \lgdz\lib\Pinyin Pinyin();
- * @method \lgdz\lib\Queue Queue();
+ * @method \lgdz\lib\Queue Queue(array $config);
  * @package lgdz
  */
 class Factory

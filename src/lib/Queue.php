@@ -50,7 +50,7 @@ class Queue extends InstanceClass implements InstanceInterface
 
     protected function request(array $input)
     {
-        $this->factory->HttpRequest()->post($this->producer_url, $input, function (Curl $curl) {
+        $this->factory->HttpRequest()->post($this->producer_url, $this->package($input), function (Curl $curl) {
             $curl->setHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
         });
     }
