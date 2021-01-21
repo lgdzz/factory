@@ -50,7 +50,7 @@ class Queue extends InstanceClass implements InstanceInterface
 
     protected function request(array $input)
     {
-        $this->factory->HttpRequest()->post($this->producer_url, $this->package($input), function (Curl $curl) {
+        return $this->factory->HttpRequest()->post($this->producer_url, $this->package($input), function (Curl $curl) {
             $curl->setHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
         });
     }
@@ -58,6 +58,7 @@ class Queue extends InstanceClass implements InstanceInterface
     /**
      * 立即执行
      * @param array $input
+     * @return mixed|null
      */
     public function push(array $input)
     {
@@ -68,6 +69,7 @@ class Queue extends InstanceClass implements InstanceInterface
      * 延时执行
      * @param array $input
      * @param DateTime|string|int $time
+     * @return mixed|null
      */
     public function delayed(array $input, $time)
     {
@@ -89,14 +91,17 @@ class Queue extends InstanceClass implements InstanceInterface
     /**
      * 周期执行
      * @param array $input
+     * @param string $key
      * @param string $crontab
+     * @return mixed|null
      * @throws \Exception
      */
-    public function cycle(array $input, string $crontab)
+    public function cycle(array $input, string $key, string $crontab)
     {
         return $this->request(array_merge(
             $input,
             [
+                'key'   => $key,
                 'cycle' => $crontab,
                 'delay' => $this->next($crontab)
             ]
