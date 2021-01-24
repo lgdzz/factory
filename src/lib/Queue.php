@@ -92,18 +92,20 @@ class Queue extends InstanceClass implements InstanceInterface
      * 周期执行
      * @param array $input
      * @param string $key
+     * @param string $command
      * @param string $crontab
      * @return mixed|null
      * @throws \Exception
      */
-    public function cycle(array $input, string $key, string $crontab)
+    public function cycle(array $input, string $key, string $command, string $crontab)
     {
         return $this->request(array_merge(
             $input,
             [
-                'key'   => $key,
-                'cycle' => $crontab,
-                'delay' => $this->next($crontab)
+                'key'     => $key,
+                'command' => $command,
+                'cycle'   => $crontab,
+                'delay'   => $this->next($crontab)
             ]
         ));
     }
