@@ -9,6 +9,8 @@ use lgdz\exception\CaptchaException;
 class Captcha extends InstanceClass implements InstanceInterface
 {
     private $secret = '';
+    private $point = true;
+    private $line = true;
     private $content = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     public function setSecret($secret)
@@ -26,6 +28,8 @@ class Captcha extends InstanceClass implements InstanceInterface
     public function setLevelEasy()
     {
         $this->content = '0123456789';
+        $this->point   = false;
+        $this->line    = false;
         return $this;
     }
 
@@ -39,7 +43,7 @@ class Captcha extends InstanceClass implements InstanceInterface
         $captcha = '';
         for ($i = 0; $i < 4; $i++) {
             // 字体大小
-            $fontsize = 10;
+            $fontsize = 5;
             // 字体颜色
             $fontcolor = imagecolorallocate($image, mt_rand(0, 120), mt_rand(0, 120), mt_rand(0, 120));
             // 设置字体内容
@@ -51,13 +55,17 @@ class Captcha extends InstanceClass implements InstanceInterface
             // 填充内容到画布中
             imagestring($image, $fontsize, $x, $y, $fontcontent, $fontcolor);
         }
-        for ($$i = 0; $i < 200; $i++) {
-            $pointcolor = imagecolorallocate($image, mt_rand(50, 200), mt_rand(50, 200), mt_rand(50, 200));
-            imagesetpixel($image, mt_rand(1, 99), mt_rand(1, 29), $pointcolor);
+        if ($this->point) {
+            for ($$i = 0; $i < 200; $i++) {
+                $pointcolor = imagecolorallocate($image, mt_rand(50, 200), mt_rand(50, 200), mt_rand(50, 200));
+                imagesetpixel($image, mt_rand(1, 99), mt_rand(1, 29), $pointcolor);
+            }
         }
-        for ($i = 0; $i < 3; $i++) {
-            $linecolor = imagecolorallocate($image, mt_rand(50, 200), mt_rand(50, 200), mt_rand(50, 200));
-            imageline($image, mt_rand(1, 99), mt_rand(1, 29), mt_rand(1, 99), mt_rand(1, 29), $linecolor);
+        if ($this->line) {
+            for ($i = 0; $i < 3; $i++) {
+                $linecolor = imagecolorallocate($image, mt_rand(50, 200), mt_rand(50, 200), mt_rand(50, 200));
+                imageline($image, mt_rand(1, 99), mt_rand(1, 29), mt_rand(1, 99), mt_rand(1, 29), $linecolor);
+            }
         }
         imagepng($image);
         imagedestroy($image);
