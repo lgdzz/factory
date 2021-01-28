@@ -87,7 +87,7 @@ class QueueService extends InstanceClass implements InstanceInterface
     protected function update_cycle_task_total(string $cron_key, float $runtime, bool $result)
     {
         $client = new Client($this->getApiIp(), $this->getApiPort());
-        $client->post('/crontab_run_change_total', ['key' => $cron_key, 'runtime' => $runtime]);
+        $client->post('/crontab_run_change_total', ['key' => $cron_key, 'result' => $result, 'runtime' => $runtime]);
         $client->close();
     }
 
@@ -119,7 +119,7 @@ class QueueService extends InstanceClass implements InstanceInterface
     {
         $start    = microtime(true);
         $callback = $data['callback'];
-        $client   = new Client($callback['host'], $callback['port']);
+        $client   = new Client($callback['host'], (int)$callback['port']);
         $client->set(['timeout' => $callback['timeout'] ?? 10]);
         $client->post($callback['path'], $data);
         $response = $client->body;
@@ -144,8 +144,9 @@ class QueueService extends InstanceClass implements InstanceInterface
     protected function execute_cycle_task(array $data)
     {
         // 口令不正确，跳过任务
-        if (!$this->execute_cycle_task_before($data))
+        if (!$this->execute_cycle_task_before($data)) {
             return;
+        }
         // 执行任务
         $result = $this->execute($data);
         // 更新执行时间和次数
@@ -188,7 +189,7 @@ class QueueService extends InstanceClass implements InstanceInterface
      */
     public function consumer(array $data)
     {
-        go(function () use ($data) {
+        \Co\run(function () use ($data) {
             try {
                 $appid    = $data['appid'] ?? null;
                 $callback = $data['callback'] ?? null;

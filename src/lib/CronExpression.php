@@ -21,10 +21,10 @@ class CronExpression extends InstanceClass implements InstanceInterface
         $this->time_zone = $time_zone;
     }
 
-    public function Cron(string $cron_exp): Cron
+    public function Cron(string $cron_exp, string $current_time = 'now'): Cron
     {
         $cron = new Cron($cron_exp);
-        $cron->isDue('now', $this->time_zone);
+        $cron->isDue($current_time, $this->time_zone);
         return $cron;
     }
 
