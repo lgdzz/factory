@@ -16,6 +16,8 @@ class Queue extends InstanceClass implements InstanceInterface
         'port' => 80,
         'path' => '/'
     ];
+    // 任务执行超时时间，默认10秒，-1不限制
+    protected $timeout = 10;
     // 生产者接口地址
     protected $producer_url = '';
 
@@ -34,6 +36,11 @@ class Queue extends InstanceClass implements InstanceInterface
                 'port' => $port,
                 'path' => $path
             ];
+        }
+        if (isset($config['timeout'])) {
+            $this->callback['timeout'] = $config['timeout'];
+        } else {
+            $this->callback['timeout'] = $this->timeout;
         }
     }
 
