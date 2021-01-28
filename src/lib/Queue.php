@@ -110,6 +110,18 @@ class Queue extends InstanceClass implements InstanceInterface
         ));
     }
 
+    public function cycle_test(array $input, string $key)
+    {
+        return $this->request(array_merge(
+            $input,
+            [
+                'key'   => $key,
+                'cycle' => 'test'
+            ]
+        ));
+    }
+
+
     /**
      * @param string $rule
      * rule 第1个*：分钟 (0 - 59)

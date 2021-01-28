@@ -21,6 +21,8 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\Captcha Captcha();
  * @method \lgdz\lib\Pinyin Pinyin();
  * @method \lgdz\lib\Queue Queue(array $config);
+ * @method \lgdz\lib\QueueService QueueService(array $config);
+ * @method \lgdz\lib\CronExpression CronExpression();
  * @package lgdz
  */
 class Factory
