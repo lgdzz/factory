@@ -3,19 +3,39 @@
 namespace lgdz\lib;
 
 use Exception;
-use Swoole\Coroutine\Redis;
+use Redis;
 use Swoole\Coroutine\Http\Client;
 
 class QueueService extends InstanceClass implements InstanceInterface
 {
     protected $config = [
-        'redis_ip'      => '100.31.0.3',
-        'redis_port'    => 6379,
+        'redis_ip'      => '127.0.0.1',
+        'redis_port'    => 16379,
         'producer_ip'   => '100.31.0.4',
         'producer_port' => 9501,
         'api_ip'        => '100.31.0.51',
         'api_port'      => 9501
     ];
+
+    /**
+     * @var Redis
+     */
+    protected $redis;
+
+    public function __construct(array $config = [])
+    {
+        $this->config = array_merge($this->config, $config);
+        // 初始化redis连接
+        $redis = new Redis();
+        $redis->connect($this->getRedisIp(), $this->getRedisPort());
+        $redis->select(0);
+        $this->redis = $redis;
+    }
+
+    public function getRedis()
+    {
+        return $this->redis;
+    }
 
     public function getRedisIp(): string
     {
@@ -45,19 +65,6 @@ class QueueService extends InstanceClass implements InstanceInterface
     public function getProducerPort(): string
     {
         return $this->config['producer_port'];
-    }
-
-    /**
-     * @var Redis
-     */
-    protected $redis;
-
-    public function __construct(array $config = [])
-    {
-        $this->config = array_merge($this->config, $config);
-        // 初始化redis连接
-        $redis = new Redis();
-        $redis->connect($this->getRedisIp(), $this->getRedisPort());
     }
 
     protected function print_error_log($msg)
@@ -181,7 +188,7 @@ class QueueService extends InstanceClass implements InstanceInterface
      */
     public function consumer(array $data)
     {
-        Co\run(function () use ($data) {
+        go(function () use ($data) {
             try {
                 $appid    = $data['appid'] ?? null;
                 $callback = $data['callback'] ?? null;
