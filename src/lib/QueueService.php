@@ -9,8 +9,8 @@ use Swoole\Coroutine\Http\Client;
 class QueueService extends InstanceClass implements InstanceInterface
 {
     protected $config = [
-        'redis_ip'      => '127.0.0.1',
-        'redis_port'    => 16379,
+        'redis_ip'      => '100.31.0.3',
+        'redis_port'    => 6379,
         'producer_ip'   => '100.31.0.4',
         'producer_port' => 9501,
         'api_ip'        => '100.31.0.51',
