@@ -61,4 +61,21 @@ class Helper extends InstanceClass implements InstanceInterface
             'value' => $value
         ];
     }
+
+    // 获取IP信息
+    public function getIpInfo(string $ip, string $access_key = 'alibaba-inc')
+    {
+        $result = $this->factory->HttpRequest()->post('http://ip.taobao.com/outGetIpInfo', [
+            'ip'        => $ip,
+            'accessKey' => $access_key
+        ], function ($curl) {
+            $curl->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        });
+        if ($result && isset($result->code) && $result->code === 0) {
+            $data = $result->data;
+            return sprintf('%s|%s|%s|%s', $data->country ?? '-', $data->region ?? '-', $data->city ?? '-', $data->isp ?? '-');
+        } else {
+            return '未知';
+        }
+    }
 }
