@@ -63,7 +63,7 @@ class Helper extends InstanceClass implements InstanceInterface
     }
 
     // 获取IP信息
-    public function getIpInfo(string $ip, string $access_key = 'alibaba-inc')
+    public function getIpInfo(string $ip = 'myip', string $access_key = 'alibaba-inc')
     {
         $result = $this->factory->HttpRequest()->post('http://ip.taobao.com/outGetIpInfo', [
             'ip'        => $ip,
@@ -73,9 +73,17 @@ class Helper extends InstanceClass implements InstanceInterface
         });
         if ($result && isset($result->code) && $result->code === 0) {
             $data = $result->data;
-            return sprintf('%s|%s|%s|%s', $data->country ?? '-', $data->region ?? '-', $data->city ?? '-', $data->isp ?? '-');
+            return [
+                'ip'     => $data->queryIp,
+                'isp'    => sprintf('%s|%s|%s|%s', $data->country ?? '-', $data->region ?? '-', $data->city ?? '-', $data->isp ?? '-'),
+                'result' => $data
+            ];
         } else {
-            return '未知';
+            return [
+                'ip'     => '未知',
+                'isp'    => '未知',
+                'result' => null,
+            ];
         }
     }
 }
