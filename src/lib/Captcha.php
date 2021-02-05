@@ -11,6 +11,7 @@ class Captcha extends InstanceClass implements InstanceInterface
     private $secret = '';
     private $point = true;
     private $line = true;
+    private $bgcolor = [255, 255, 255];
     private $content = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     public function setSecret($secret)
@@ -22,6 +23,12 @@ class Captcha extends InstanceClass implements InstanceInterface
     public function setContent(string $content)
     {
         $this->content = $content;
+        return $this;
+    }
+
+    public function setBgColor(array $color)
+    {
+        $this->bgcolor = $color;
         return $this;
     }
 
@@ -37,7 +44,7 @@ class Captcha extends InstanceClass implements InstanceInterface
     {
         ob_start();
         $image   = imagecreatetruecolor(100, 30);
-        $bgcolor = imagecolorallocate($image, 255, 255, 255);
+        $bgcolor = imagecolorallocate($image, ...$this->bgcolor);
         imagefill($image, 0, 0, $bgcolor);
         $content = $this->content;
         $captcha = '';
