@@ -10,10 +10,16 @@ class Local implements Drive
 {
     public function upload(File $file): UploadResult
     {
+        $folder = sprintf('/file/%s/', date('Ymd'));
+        $base_path = dirname(__DIR__);
+        file_exists($base_path . $folder) || mkdir($base_path . $folder, 0777, true);
+        $filepath = sprintf('%s%s.%s', $folder, date('YmdHis') . rand(1000, 9999), $file->getExtension());
+
         $result       = new UploadResult();
-        $result->test = '本地存储';
+        $result->file = $file;
+        $result->url  = $filepath;
+        $result->path = $filepath;
         return $result;
-        // TODO: Implement upload() method.
     }
 
     public function delete($input)

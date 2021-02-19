@@ -52,7 +52,7 @@ class Qiniu implements Drive
     public function upload(File $file): UploadResult
     {
         // 文件名称
-        $filename = $file->getFielname() ?: date('YmdHis') . rand(1000, 9999);
+        $filename = date('YmdHis') . rand(1000, 9999);
         // 本地图片路径
         $local_path = $file->getTmpPath();
         // 七牛存储路径
