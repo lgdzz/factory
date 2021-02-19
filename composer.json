@@ -13,7 +13,8 @@
     "php-curl-class/php-curl-class": "^8.6",
     "firebase/php-jwt": "^5.2",
     "overtrue/pinyin": "^4.0",
-    "dragonmantank/cron-expression": "^3.1"
+    "dragonmantank/cron-expression": "^3.1",
+    "qiniu/php-sdk": "^7.3"
   },
   "autoload": {
     "psr-4": {

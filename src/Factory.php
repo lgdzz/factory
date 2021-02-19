@@ -24,6 +24,7 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\QueueService QueueService(array $config);
  * @method \lgdz\lib\CronExpression CronExpression();
  * @method \lgdz\lib\Password Password();
+ * @method \lgdz\lib\FileResource FileResource(array $config);
  * @package lgdz
  */
 class Factory
