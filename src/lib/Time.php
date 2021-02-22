@@ -34,4 +34,18 @@ class Time extends InstanceClass implements InstanceInterface
             return $dates;
         }
     }
+
+    public function dateBetween($value)
+    {
+        if (is_string($value)) {
+            $value = explode(',', $value);
+        }
+
+        if (is_array($value)) {
+            $value[0] = date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime($value[0]))));
+            $value[1] = date('Y-m-d H:i:s', strtotime('+1 day', strtotime(date('Y-m-d', strtotime($value[1])))) - 1);
+        }
+
+        return $value;
+    }
 }
