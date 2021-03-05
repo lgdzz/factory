@@ -15,7 +15,6 @@ class Pinyin extends InstanceClass implements InstanceInterface
 
     public function __construct()
     {
-        var_dump(1);
         $this->pinyin = new PinyinUtils;
     }
 

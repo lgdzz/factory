@@ -45,7 +45,7 @@ class HttpRequest extends InstanceClass implements InstanceInterface
             !is_null($before) && $before($curl);
             $request($curl);
             $curl->close();
-            return is_null($after) ? $curl->getResponse() : $after($curl->getResponse());
+            return is_null($after) ? $curl->getResponse() : $after($curl->getResponse(), $curl);
         } catch (\Throwable $e) {
             throw new \Exception($e->getMessage());
         }
