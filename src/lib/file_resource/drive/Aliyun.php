@@ -50,7 +50,7 @@ class Aliyun implements Drive
         isset($config['host']) && $this->host = $config['host'];
     }
 
-    protected function OssClient()
+    public function OssClient()
     {
         return new OssClient($this->access_key_id, $this->access_key_secret, $this->endpoint);
     }
