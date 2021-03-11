@@ -62,7 +62,7 @@ class Aliyun implements Drive
         // 本地图片路径
         $local_path = $file->getTmpPath();
         // 阿里云存储路径
-        $remote_path = sprintf('%s/%s.%s', $file->getFilepath(), $filename, $file->getExtension());
+        $remote_path = sprintf('%s/%s', $file->getFilepath(), $filename);
         try {
             $ossClient = $this->OssClient();
             $ossClient->uploadFile($this->bucket, $remote_path, $local_path);
@@ -89,6 +89,14 @@ class Aliyun implements Drive
         } catch (OssException $e) {
             throw new Exception($e->getMessage());
         }
+    }
+
+    public function thumb(string $path, int $width = 100)
+    {
+        if ($path) {
+            return $path . "?x-oss-process=image/auto-orient,1/interlace,1/resize,m_lfit,w_{$width}/quality,q_90/format,jpg";
+        }
+        return $path;
     }
 
 }
