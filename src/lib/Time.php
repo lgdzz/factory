@@ -48,4 +48,10 @@ class Time extends InstanceClass implements InstanceInterface
 
         return $value;
     }
+
+    public function todayTimestampBetween(string $date)
+    {
+        [$start, $end] = $this->dateBetween([$date, $date]);
+        return [strtotime($start), strtotime($end)];
+    }
 }
