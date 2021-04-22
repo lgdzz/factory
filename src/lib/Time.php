@@ -35,21 +35,30 @@ class Time extends InstanceClass implements InstanceInterface
         }
     }
 
-    public function dateBetween($value)
+    /**
+     * @param string|array $value
+     * @return array
+     */
+    public function dateBetween($value): array
     {
         if (is_string($value)) {
             $value = explode(',', $value);
         }
 
         if (is_array($value)) {
-            $value[0] = date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime($value[0]))));
-            $value[1] = date('Y-m-d H:i:s', strtotime('+1 day', strtotime(date('Y-m-d', strtotime($value[1])))) - 1);
+            [$start, $end] = $value;
+            $value[0] = date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime($start))));
+            $value[1] = date('Y-m-d H:i:s', strtotime('+1 day', strtotime(date('Y-m-d', strtotime($end)))) - 1);
         }
 
         return $value;
     }
 
-    public function dateBetweenTimestamp($value)
+    /**
+     * @param string|array $value
+     * @return array
+     */
+    public function dateBetweenTimestamp($value): array
     {
         [$start, $end] = $this->dateBetween($value);
         return [strtotime($start), strtotime($end)];
@@ -59,5 +68,25 @@ class Time extends InstanceClass implements InstanceInterface
     {
         [$start, $end] = $this->dateBetween([$date, $date]);
         return [strtotime($start), strtotime($end)];
+    }
+
+    public function computeTime(int $start, int $end): int
+    {
+        return abs($start - $end);
+    }
+
+    // 计算两个时间差值并格式化为字符串
+    public function computeTimeFormat(int $start, int $end): string
+    {
+        $duration = $this->computeTime($start, $end);
+        $output = '';
+        foreach ([31536000 => '年', 86400 => '天', 3600 => '小时', 60 => '分', 1 => '秒'] as $key => $value) {
+            if ($duration >= $key) $output .= floor($duration / $key) . $value;
+            $duration %= $key;
+        }
+        if ($output == '') {
+            $output = 0;
+        }
+        return $output;
     }
 }
