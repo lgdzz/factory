@@ -25,6 +25,8 @@ use lgdz\lib\InstanceInterface;
  * @method \lgdz\lib\CronExpression CronExpression();
  * @method \lgdz\lib\Password Password();
  * @method \lgdz\lib\FileResource FileResource(array $config);
+ * @method \lgdz\lib\NumberFormat NumberFormat();
+ * @method \lgdz\lib\NumberCompute NumberCompute();
  * @package lgdz
  */
 class Factory

@@ -43,7 +43,7 @@ class Helper extends InstanceClass implements InstanceInterface
             if ($row[$parent] !== $id) continue;
             $child = $this->tree($list, $row['id']);
             if ($child) {
-                $row['child']     = $child;
+                $row['child'] = $child;
                 $row['has_child'] = true;
             } else {
                 $row['has_child'] = false;
@@ -85,5 +85,13 @@ class Helper extends InstanceClass implements InstanceInterface
                 'result' => null,
             ];
         }
+    }
+
+    // 二维数组排序
+    public function arrayMultiSort(array $list, string $column_name, int $sort = SORT_ASC)
+    {
+        $column = array_column($list, $column_name);
+        array_multisort($column, $sort, $list);
+        return $list;
     }
 }
