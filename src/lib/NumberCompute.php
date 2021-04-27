@@ -6,7 +6,7 @@ namespace lgdz\lib;
  * Class NumberCompute 数字计算
  * @package lgdz\lib
  */
-class NumberCompute extends InstanceClass implements InstanceInterface
+class NumberCompute
 {
     /**
      * 除法

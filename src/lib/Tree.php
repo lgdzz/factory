@@ -2,14 +2,14 @@
 
 namespace lgdz\lib;
 
-class Tree extends InstanceClass implements InstanceInterface
+class Tree
 {
-    public function tree(array $list, $id, string $pid = 'pid')
+    public function build(array $list, $id, string $pid = 'pid')
     {
         $tmp = [];
         foreach ($list as $row) {
             if ($row[$pid] !== $id) continue;
-            $children = $this->tree($list, $row['id'], $pid);
+            $children = $this->build($list, $row['id'], $pid);
             if ($children) {
                 $row['has_child'] = true;
                 $row['children']  = $children;

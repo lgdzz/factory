@@ -5,10 +5,11 @@ declare (strict_types=1);
 namespace lgdz\lib;
 
 use Firebase\JWT\{JWT, ExpiredException, SignatureInvalidException};
+use lgdz\Factory;
 use Redis;
 use lgdz\exception\JwtAuthException;
 
-class JwtAuth extends InstanceClass implements InstanceInterface
+class JwtAuth
 {
     // 密钥
     private $secret = '';
@@ -21,19 +22,49 @@ class JwtAuth extends InstanceClass implements InstanceInterface
     private $redis = null;
 
     /**
-     * JwtAuth constructor.
-     * @param array $config
+     * @return string
      */
-    public function __construct(array $config)
+    public function getSecret(): string
     {
-        if (isset($config['secret'])) $this->secret = $config['secret'];
-        if (isset($config['ticket_key'])) $this->ticket_key = $config['ticket_key'];
+        return $this->secret;
+    }
+
+    /**
+     * @param string $secret
+     */
+    public function setSecret(string $secret): void
+    {
+        $this->secret = $secret;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTicketKey(): string
+    {
+        return $this->ticket_key;
+    }
+
+    /**
+     * @param string $ticket_key
+     */
+    public function setTicketKey(string $ticket_key): void
+    {
+        $this->ticket_key = $ticket_key;
+    }
+
+    /**
+     * @return Redis
+     */
+    public function getRedis(): Redis
+    {
+        return $this->redis;
     }
 
     /**
      * @param Redis $redis
      */
-    public function setRedis($redis)
+    public function setRedis(Redis $redis): void
     {
         $this->redis = $redis;
     }
@@ -44,7 +75,7 @@ class JwtAuth extends InstanceClass implements InstanceInterface
     private function checkRedis()
     {
         if (is_null($this->redis)) {
-            throw new JwtAuthException('未调用setRedis方法');
+            throw new JwtAuthException('Redis未初始化');
         }
     }
 
@@ -61,11 +92,11 @@ class JwtAuth extends InstanceClass implements InstanceInterface
         $nowTime = time();
         // 过期时间
         $timestamp = $nowTime + $expire;
-        $payload   = [
+        $payload = [
             // 签发时间
             'iat'  => $nowTime,
             'exp'  => $timestamp,
-            'body' => array_merge(['uid' => $uid, 'ticket' => $this->factory->Helper()->randomString(50)], $body)
+            'body' => array_merge(['uid' => $uid, 'ticket' => Factory::container()->helper->randomString(50)], $body)
         ];
         $this->checkRedis();
         $this->redis->hSet($this->ticket_key, (string)$uid, serialize($payload));

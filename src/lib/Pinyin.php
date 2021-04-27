@@ -6,7 +6,7 @@ namespace lgdz\lib;
 
 use Overtrue\Pinyin\Pinyin as PinyinUtils;
 
-class Pinyin extends InstanceClass implements InstanceInterface
+class Pinyin
 {
     /**
      * @var PinyinUtils

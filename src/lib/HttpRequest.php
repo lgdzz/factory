@@ -6,7 +6,7 @@ namespace lgdz\lib;
 
 use Curl\Curl;
 
-class HttpRequest extends InstanceClass implements InstanceInterface
+class HttpRequest
 {
     public function get(string $url, array $data = [], \Closure $before = null, \Closure $after = null)
     {

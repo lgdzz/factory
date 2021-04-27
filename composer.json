@@ -1,6 +1,6 @@
 {
   "name": "lgdz/factory",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "tools class",
   "type": "library",
   "license": "MIT",
@@ -14,7 +14,8 @@
     "firebase/php-jwt": "^5.2",
     "overtrue/pinyin": "^4.0",
     "dragonmantank/cron-expression": "^3.1",
-    "ext-bcmath": "*"
+    "ext-bcmath": "*",
+    "ext-mbstring": "*"
   },
   "autoload": {
     "psr-4": {

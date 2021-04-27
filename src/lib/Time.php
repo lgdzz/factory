@@ -4,7 +4,7 @@ declare (strict_types=1);
 
 namespace lgdz\lib;
 
-class Time extends InstanceClass implements InstanceInterface
+class Time
 {
     /**
      * 获取指定日期范围内的所有日期

@@ -4,9 +4,9 @@ declare (strict_types=1);
 
 namespace lgdz\lib;
 
-class HttpResponse extends InstanceClass implements InstanceInterface
+class HttpResponse
 {
-    public $outString = true;
+    public $string_json = false;
 
     protected function _out(int $error, string $message = 'Success', int $status = 0, $data = null)
     {
@@ -17,7 +17,7 @@ class HttpResponse extends InstanceClass implements InstanceInterface
             'data'      => $data,
             'timestamp' => time()
         ];
-        return $this->outString ? json_encode($data, JSON_UNESCAPED_UNICODE) : $data;
+        return $this->string_json ? json_encode($data, JSON_UNESCAPED_UNICODE) : $data;
     }
 
     public function ok($data = null)
@@ -25,14 +25,14 @@ class HttpResponse extends InstanceClass implements InstanceInterface
         return $this->_out(0, 'Success', 0, $data);
     }
 
-    public function bad(string $message = 'Error', int $status = 0)
-    {
-        return $this->_out(1, $message, $status);
-    }
-
     public function success(string $message, $data = null)
     {
         return $this->_out(0, $message, 0, $data);
+    }
+
+    public function bad(string $message = 'Error', int $status = 0)
+    {
+        return $this->_out(1, $message, $status);
     }
 
     public function fail(string $message, int $status = 0, $data = null)

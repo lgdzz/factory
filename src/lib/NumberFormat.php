@@ -6,7 +6,7 @@ namespace lgdz\lib;
  * Class NumberFormat 数字格式化
  * @package lgdz\lib
  */
-class NumberFormat extends InstanceClass implements InstanceInterface
+class NumberFormat
 {
     public function toString($number, int $decimal = 2): string
     {

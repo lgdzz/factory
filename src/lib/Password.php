@@ -4,7 +4,7 @@ declare (strict_types=1);
 
 namespace lgdz\lib;
 
-class Password extends InstanceClass implements InstanceInterface
+class Password
 {
     public function build(string $password, string $salt): string
     {
