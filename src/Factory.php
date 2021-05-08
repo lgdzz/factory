@@ -6,7 +6,19 @@ namespace lgdz;
 
 use Exception;
 use ReflectionClass;
-use lgdz\lib\{Helper, HttpRequest, HttpResponse, JwtAuth, NumberCompute, NumberFormat, Password, Pinyin, Time, Tree};
+use lgdz\lib\{
+    Helper,
+    HttpRequest,
+    HttpResponse,
+    JwtAuth,
+    NumberCompute,
+    NumberFormat,
+    Password,
+    Pinyin,
+    Time,
+    Tree,
+    DbDictionary
+};
 
 /**
  * Class Factory
@@ -20,6 +32,7 @@ use lgdz\lib\{Helper, HttpRequest, HttpResponse, JwtAuth, NumberCompute, NumberF
  * @property-read Time $time;
  * @property-read Tree $tree;
  * @property-read JwtAuth jwt;
+ * @property-read DbDictionary $db_dictionary;
  * @package lgdz
  */
 class Factory
@@ -35,16 +48,17 @@ class Factory
     }
 
     protected $class = [
-        'helper'      => Helper::class,
-        'request'     => HttpRequest::class,
-        'response'    => HttpResponse::class,
-        'jwt'         => JwtAuth::class,
-        'num_compute' => NumberCompute::class,
-        'num_format'  => NumberFormat::class,
-        'password'    => Password::class,
-        'pinyin'      => Pinyin::class,
-        'time'        => Time::class,
-        'tree'        => Tree::class
+        'helper'        => Helper::class,
+        'request'       => HttpRequest::class,
+        'response'      => HttpResponse::class,
+        'jwt'           => JwtAuth::class,
+        'num_compute'   => NumberCompute::class,
+        'num_format'    => NumberFormat::class,
+        'password'      => Password::class,
+        'pinyin'        => Pinyin::class,
+        'time'          => Time::class,
+        'tree'          => Tree::class,
+        'db_dictionary' => DbDictionary::class
     ];
 
     /**
