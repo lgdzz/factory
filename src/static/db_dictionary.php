@@ -8,7 +8,6 @@
     }
 
     table, h1, p {
-        width: 960px;
         margin: 0px auto;
     }
 
@@ -71,8 +70,8 @@
     .menu {
         position: fixed;
         top: 50px;
-        left: 100px;
-        width: 200px;
+        left: 50px;
+        width: 300px;
         height: 800px;
         overflow: auto;
     }
@@ -81,9 +80,18 @@
         /*color: #e91e63;*/
     }
 
+    .menu .comment {
+        color: #ccc;
+        float: right;
+    }
+
+    .tables{
+        width: 960px;
+        margin-left: 400px;
+    }
+
     .table {
         box-shadow: 0px 0px 15px #ccc;
-        width: 960px;
         margin: 0 auto;
         padding: 30px;
         margin-bottom: 30px;
@@ -100,17 +108,18 @@
     }
 </style>
 <body>
-<h1 style="text-align:center;"><?php echo $this->dbname; ?>数据字典</h1>
-<p style="text-align:center;margin:20px auto;">生成时间：<?php echo date('Y年m月d日 H:i'); ?></p>
 <div class="menu">
     <?php
     foreach ($this->tables as $table) {
-        echo '<div><a href="#table_' . $table['TABLE_NAME'] . '">' . $table['TABLE_NAME'] . '</a></div>';
+        $comment = '<span class="comment">（' . ($table['TABLE_COMMENT'] ?: '-') . '）</span>';
+        echo '<div><a href="#table_' . $table['TABLE_NAME'] . '">' . $table['TABLE_NAME'] . '</a>' . $comment . '</div>';
     }
     ?>
     <p style="text-align:left;margin:20px auto;">总共：<?php echo count($this->tables); ?></p>
 </div>
-<div>
+<div class="tables">
+    <h1 style="text-align:center;"><?php echo $this->dbname; ?>数据字典</h1>
+    <p style="text-align:center;margin:20px auto;">生成时间：<?php echo date('Y年m月d日 H:i'); ?></p>
     <?php
     foreach ($this->tables as $table) {
         echo '<div class="table" id="table_' . $table['TABLE_NAME'] . '"><table border="1" cellspacing="0" cellpadding="0" align="center">';
