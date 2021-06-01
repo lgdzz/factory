@@ -70,6 +70,11 @@ class Time
         return [strtotime($start), strtotime($end)];
     }
 
+    public function todayBetween(string $date)
+    {
+        return $this->dateBetween([$date, $date]);
+    }
+
     public function computeTime(int $start, int $end): int
     {
         return abs($start - $end);
@@ -88,5 +93,20 @@ class Time
             $output = 0;
         }
         return $output;
+    }
+
+    public function getHours(bool $now = true)
+    {
+        $hours = [];
+        if ($now) {
+            $date = new \DateTime('now', new \DateTimeZone('Asia/Shanghai'));
+            $last_hour = $date->format('H');
+        } else {
+            $last_hour = 23;
+        }
+        for ($i = 0; $i <= $last_hour; $i++) {
+            array_push($hours, str_pad((string)$i, 2, (string)0, STR_PAD_LEFT));
+        }
+        return $hours;
     }
 }
