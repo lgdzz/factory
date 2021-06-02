@@ -91,7 +91,7 @@ class Time
 
     public function yearBetween(string $year, bool $is_int = false)
     {
-        $year = date('Y', strtotime($year));
+        $year = date('Y', strtotime($year . '-01'));
         $start = strtotime($year . '-01');
         $end = strtotime('+1 year', $start) - 1;
         if (!$is_int) {
