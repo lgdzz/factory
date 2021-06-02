@@ -77,6 +77,30 @@ class Time
         return $this->dateBetween([$date, $date]);
     }
 
+    public function monthBetween(string $month, bool $is_int = false)
+    {
+        $month = date('Y-m', strtotime($month));
+        $start = strtotime($month);
+        $end = strtotime('+1 month', $start) - 1;
+        if (!$is_int) {
+            $start = date('Y-m-d H:i:s', $start);
+            $end = date('Y-m-d H:i:s', $end);
+        }
+        return [$start, $end];
+    }
+
+    public function yearBetween(string $year, bool $is_int = false)
+    {
+        $year = date('Y', strtotime($year));
+        $start = strtotime($year . '-01');
+        $end = strtotime('+1 year', $start) - 1;
+        if (!$is_int) {
+            $start = date('Y-m-d H:i:s', $start);
+            $end = date('Y-m-d H:i:s', $end);
+        }
+        return [$start, $end];
+    }
+
     public function computeTime(int $start, int $end): int
     {
         return abs($start - $end);
