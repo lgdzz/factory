@@ -95,10 +95,10 @@ class Time
         return $output;
     }
 
-    public function getHours(bool $now = true)
+    public function getHours(string $day = 'now')
     {
         $hours = [];
-        if ($now) {
+        if ($day === 'now' || strtolower($day) >= strtolower(date('Y-m-d'))) {
             $date = new \DateTime('now', new \DateTimeZone('Asia/Shanghai'));
             $last_hour = $date->format('H');
         } else {
