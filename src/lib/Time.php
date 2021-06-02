@@ -6,6 +6,8 @@ namespace lgdz\lib;
 
 class Time
 {
+    private $time_zone = 'Asia/Shanghai';
+
     /**
      * 获取指定日期范围内的所有日期
      * @param string $start_date
@@ -95,6 +97,7 @@ class Time
         return $output;
     }
 
+    // 获取一天内hours
     public function getHours(string $day = 'now')
     {
         $hours = [];
@@ -108,5 +111,43 @@ class Time
             array_push($hours, str_pad((string)$i, 2, (string)0, STR_PAD_LEFT));
         }
         return $hours;
+    }
+
+    // 获取一个月内days
+    public function getDays(string $month = 'now')
+    {
+        $days = [];
+        $now_month = date('Y-m');
+        if ($month === 'now' || strtolower($month) >= strtolower($now_month)) {
+            $month = $now_month;
+            $date = new \DateTime('now', new \DateTimeZone('Asia/Shanghai'));
+            $last_day = $date->format('d');
+        } else {
+            $date = new \DateTime($month, new \DateTimeZone($this->time_zone));
+            $last_day = date('d', strtotime('+1 month', strtotime($date->format('Y-m-d'))) - 1);
+        }
+        for ($i = 1; $i <= $last_day; $i++) {
+            array_push($days, $month . '-' . str_pad((string)$i, 2, (string)0, STR_PAD_LEFT));
+        }
+        return $days;
+    }
+
+    // 获取一年内months
+    public function getMonths(string $year = 'now')
+    {
+        $months = [];
+        $now_year = date('Y');
+        if ($year === 'now' || strtolower($year) >= strtolower($now_year)) {
+            $year = $now_year;
+            $date = new \DateTime('now', new \DateTimeZone('Asia/Shanghai'));
+            $last_month = $date->format('m');
+        } else {
+            $date = new \DateTime($year, new \DateTimeZone($this->time_zone));
+            $last_month = 12;
+        }
+        for ($i = 1; $i <= $last_month; $i++) {
+            array_push($months, $year . '-' . str_pad((string)$i, 2, (string)0, STR_PAD_LEFT));
+        }
+        return $months;
     }
 }
