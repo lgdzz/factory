@@ -73,7 +73,7 @@ class Helper
     }
 
     /**
-     * 检查字符串中是否包含某些字符串
+     * 检查字符串中是否包含某些字符串(or)
      * @param string $haystack 如：Hello World
      * @param string|array $needles 如：Hello 或 ['Hello', 'World']
      * @return bool
@@ -86,6 +86,22 @@ class Helper
             }
         }
         return false;
+    }
+
+    /**
+     * 检查字符串中是否包含某些字符串(and)
+     * @param string $haystack 如：Hello World
+     * @param string|array $needles 如：Hello 或 ['Hello', 'World']
+     * @return bool
+     */
+    public function containsAnd(string $haystack, $needles)
+    {
+        foreach ((array)$needles as $needle) {
+            if ('' != $needle && mb_strpos($haystack, $needle) === false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
