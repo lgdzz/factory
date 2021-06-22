@@ -40,13 +40,8 @@ class Query
         }
 
         foreach ($input as $key => $value) {
-            $this->$key = $value;
+            $this->where[$key] = $value;
         }
-    }
-
-    public function __set($name, $value)
-    {
-        $this->where[$name] = $value;
     }
 
     public function __get($name)
