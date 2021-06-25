@@ -39,9 +39,14 @@ class Query
             unset($input['size']);
         }
 
-        foreach ($input as $key => $value) {
-            $this->where[$key] = $value;
+        foreach ($input as $name => $value) {
+            $this->where[$name] = $value;
         }
+    }
+
+    public function __set($name, $value)
+    {
+        $this->where[$name] = $value;
     }
 
     public function __get($name)

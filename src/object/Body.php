@@ -11,9 +11,14 @@ class Body
 
     public function __construct(array $input)
     {
-        foreach ($input as $key => $value) {
-            $this->body[$key] = $value;
+        foreach ($input as $name => $value) {
+            $this->body[$name] = $value;
         }
+    }
+
+    public function __set($name, $value)
+    {
+        $this->body[$name] = $value;
     }
 
     public function __get($name)
