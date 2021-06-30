@@ -56,7 +56,7 @@ class JwtAuth
     /**
      * @return Redis
      */
-    public function getRedis(): Redis
+    public function getRedis()
     {
         return $this->redis;
     }
@@ -64,7 +64,7 @@ class JwtAuth
     /**
      * @param Redis $redis
      */
-    public function setRedis(Redis $redis): void
+    public function setRedis($redis): void
     {
         $this->redis = $redis;
     }
