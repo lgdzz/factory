@@ -88,7 +88,7 @@ class PasswordStrength
         }
         foreach ($forbidden_key as $keyword) {
             if (strpos(strtolower($password), $keyword) !== false) {
-                throw new Exception('密码包含系统禁止的词汇或用户名');
+                throw new Exception('密码包含系统禁止的词汇或包含用户名');
             }
         }
     }
