@@ -56,8 +56,8 @@ class Helper
         if ($result && isset($result->code) && $result->code === 0) {
             $data = $result->data;
             return [
-                'ip'     => $data->queryIp,
-                'isp'    => sprintf('%s|%s|%s|%s', $data->country ?? '-', $data->region ?? '-', $data->city ?? '-', $data->isp ?? '-'),
+                'ip' => $data->queryIp,
+                'isp' => sprintf('%s|%s|%s|%s', $data->country ?? '-', $data->region ?? '-', $data->city ?? '-', $data->isp ?? '-'),
                 'result' => $data
             ];
         } else {
@@ -297,8 +297,11 @@ class Helper
      * @param string $id_card
      * @return array
      */
-    public function idCardAnalysis(string $id_card)
+    public function idCardAnalysis(string $id_card): array
     {
+        if (strlen($id_card) !== 18) {
+            throw new \Exception('身份证号长度不正确');
+        }
         $region_code = $this->substr($id_card, 0, 6);
         $year = $this->substr($id_card, 6, 4);
         $birthday = sprintf('%s-%s-%s', $year, $this->substr($id_card, 10, 2), $this->substr($id_card, 12, 2));
@@ -321,7 +324,7 @@ class Helper
      * 随机文件名称（唯一）
      * @return string
      */
-    public function randomName()
+    public function randomName(): string
     {
         return md5(uniqid($this->orderNo(19)));
     }
@@ -333,12 +336,75 @@ class Helper
      * @param int $precision 小数位数
      * @return string
      */
-    function formatBytes($size, $delimiter = '', $precision = 2)
+    public function formatBytes(int $size, string $delimiter = '', int $precision = 2): string
     {
         $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
         for ($i = 0; $size >= 1024 && $i < 6; $i++) {
             $size /= 1024;
         }
         return round($size, $precision) . $delimiter . $units[$i];
+    }
+
+    /**
+     * 手机隐藏中间四位数
+     * @param string $mobile
+     * @return string
+     */
+    public function mobileMask(string $mobile): string
+    {
+        return substr_replace($mobile, '****', 3, 4);
+    }
+
+    /**
+     * 名称隐藏中间部分
+     * @param string $name
+     * @return string
+     */
+    public function nameMask(string $name): string
+    {
+        $len = mb_strlen($name, 'utf-8');
+        $firstStr = mb_substr($name, 0, 1, 'utf-8');
+        $lastStr = mb_substr($name, -1, 1, 'utf-8');
+        return $len == 2 ? $firstStr . str_repeat('*', mb_strlen($name, 'utf-8') - 1) : $firstStr . str_repeat('*', $len - 2) . $lastStr;
+    }
+
+    /**
+     * 增长率计算
+     * @param string $now 现在值
+     * @param string $prev 过去值
+     * @return string
+     */
+    function computeGrowRate(string $now, string $prev): string
+    {
+        if ($now == $prev) {
+            return '0.00';
+        } elseif ($prev == 0) {
+            return '-';
+        } else {
+            return sprintf("%.2f", (($now - $prev) / $prev * 100));
+        }
+    }
+
+    /**
+     * 根据起点坐标和终点坐标测距离
+     * @param array $from [起点坐标(经纬度),例如:array(118.012951,36.810024)]
+     * @param array $to [终点坐标(经纬度)]
+     * @param bool $km 是否以公里为单位 false:米 true:公里(千米)
+     * @param int $decimal 精度 保留小数位数
+     * @return float  距离数值
+     */
+    public function distance(array $from, array $to, bool $km = true, int $decimal = 2): float
+    {
+        sort($from);
+        sort($to);
+        $EARTH_RADIUS = 6370.996; // 地球半径系数
+
+        $distance = $EARTH_RADIUS * 2 * asin(sqrt(pow(sin(($from[0] * pi() / 180 - $to[0] * pi() / 180) / 2), 2) + cos($from[0] * pi() / 180) * cos($to[0] * pi() / 180) * pow(sin(($from[1] * pi() / 180 - $to[1] * pi() / 180) / 2), 2))) * 1000;
+
+        if ($km) {
+            $distance = $distance / 1000;
+        }
+
+        return round($distance, $decimal);
     }
 }

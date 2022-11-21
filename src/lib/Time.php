@@ -128,6 +128,184 @@ class Time
         return [$start, $end];
     }
 
+    /**
+     * 获取指定日期1周时间范围，默认本周
+     * @param string|null $date
+     * @param bool $is_int 是否返回时间戳数组
+     * @return array
+     */
+    public function nowWeekBetween(string $date = null, bool $is_int = false)
+    {
+        if (is_null($date)) {
+            $date = date('Y-m-d');
+        }
+        $timestamp = strtotime($date);
+        $week = date('N', $timestamp); // 1（表示星期一）到 7（表示星期天）
+        $monday = strtotime('-' . ($week - 1) . ' day', $timestamp);
+        $sunday = strtotime('+6 day', $monday);
+
+        $start = date('Y-m-d 00:00:00', $monday);
+        $end = date('Y-m-d 23:59:59', $sunday);
+
+        if ($is_int) {
+            $start = strtotime($start);
+            $end = strtotime($end);
+        }
+
+        return [$start, $end];
+    }
+
+    /**
+     * 获取上周开始时间和结束时间
+     * @param string|null $date
+     * @param bool $is_int 是否返回时间戳数组
+     * @return array
+     */
+    public function nowPrevWeekBetween(string $date = null, bool $is_int = false)
+    {
+        if (is_null($date)) {
+            $date = date('Y-m-d', strtotime('-1 week'));
+        } else {
+            $date = date('Y-m-d', strtotime('-1 week', strtotime($date)));
+        }
+        return $this->nowWeekBetween($date, $is_int);
+    }
+
+    /**
+     * 获取指定日期1个月时间范围，默认本月
+     * @param string|null $date
+     * @param bool $is_int
+     * @return array
+     */
+    public function nowMonthBetween(string $date = null, bool $is_int = false)
+    {
+        if (is_null($date)) {
+            $date = date('Y-m-01');
+        } else {
+            $date = date('Y-m-01', strtotime($date));
+        }
+        $start = strtotime($date);
+        $end = strtotime('-1 day', strtotime('+1 month', $start));
+        $start = date('Y-m-d 00:00:00', $start);
+        $end = date('Y-m-d 23:59:59', $end);
+
+        if ($is_int) {
+            $start = strtotime($start);
+            $end = strtotime($end);
+        }
+
+        return [$start, $end];
+    }
+
+    /**
+     * 获取上月开始时间和结束时间
+     * @param string|null $date
+     * @param bool $is_int 是否返回时间戳数组
+     * @return array
+     */
+    public function nowPrevMonthBetween(string $date = null, bool $is_int = false)
+    {
+        if (is_null($date)) {
+            $date = date('Y-m-d', strtotime('-1 month'));
+        } else {
+            $date = date('Y-m-d', strtotime('-1 month', strtotime($date)));
+        }
+        return $this->nowMonthBetween($date, $is_int);
+    }
+
+    /**
+     * 获取指定日期季度时间范围，默认本季度
+     * @param string|null $date
+     * @param bool $is_int
+     * @return array
+     */
+    public function nowSeasonBetween(string $date = null, bool $is_int = false)
+    {
+        if (is_null($date)) {
+            $month = str_pad((string)(ceil(date('n', time()) / 3) * 3 - 2), 2, '0', STR_PAD_LEFT);
+            $date = date('Y-' . $month . '-01');
+        } else {
+            $month = str_pad((string)(ceil(date('n', strtotime($date)) / 3) * 3 - 2), 2, '0', STR_PAD_LEFT);
+            $date = date('Y-' . $month . '-01', strtotime($date));
+        }
+
+        $start = strtotime($date);
+        $end = strtotime('-1 day', strtotime('+3 month', $start));
+        $start = date('Y-m-d 00:00:00', $start);
+        $end = date('Y-m-d 23:59:59', $end);
+
+        if ($is_int) {
+            $start = strtotime($start);
+            $end = strtotime($end);
+        }
+
+        return [$start, $end];
+    }
+
+    /**
+     * 获取上季开始时间和结束时间
+     * @param string|null $date
+     * @param bool $is_int 是否返回时间戳数组
+     * @return array
+     */
+    public function nowPrevSeasonBetween(string $date = null, bool $is_int = false)
+    {
+        $date = $date ?: date('Y-m-d');
+        $nowSeason = (int)ceil(date('n', strtotime($date)) / 3);
+        // 上季度第一个月
+        if ($nowSeason === 1) {
+            $prevSeasonFirstMonth = 10;
+            $year = date('Y', strtotime('-1 year', strtotime($date)));
+        } else {
+            $prevSeasonFirstMonth = str_pad((string)(($nowSeason - 1) * 3 - 2), 2, '0', STR_PAD_LEFT);
+            $year = date('Y', strtotime($date));
+        }
+        $date = "{$year}-{$prevSeasonFirstMonth}-01";
+        return $this->nowSeasonBetween($date, $is_int);
+    }
+
+    /**
+     * 获取指定日期1年时间范围，默认本年
+     * @param string|null $date
+     * @param bool $is_int
+     * @return array
+     */
+    public function nowYearBetween(string $date = null, bool $is_int = false)
+    {
+        if (is_null($date)) {
+            $date = date('Y-01-01');
+        } else {
+            $date = date('Y-01-01', strtotime($date));
+        }
+        $start = strtotime($date);
+        $end = strtotime('-1 day', strtotime('+1 year', $start));
+        $start = date('Y-m-d 00:00:00', $start);
+        $end = date('Y-m-d 23:59:59', $end);
+
+        if ($is_int) {
+            $start = strtotime($start);
+            $end = strtotime($end);
+        }
+
+        return [$start, $end];
+    }
+
+    /**
+     * 获取去年开始时间和结束时间
+     * @param string|null $date
+     * @param bool $is_int 是否返回时间戳数组
+     * @return array
+     */
+    public function nowPrevYearBetween(string $date = null, bool $is_int = false)
+    {
+        if (is_null($date)) {
+            $date = date('Y-m-d', strtotime('-1 year'));
+        } else {
+            $date = date('Y-m-d', strtotime('-1 year', strtotime($date)));
+        }
+        return $this->nowYearBetween($date, $is_int);
+    }
+
     public function computeTime(int $start, int $end): int
     {
         return abs($start - $end);
@@ -202,6 +380,26 @@ class Time
         return $months;
     }
 
+    // 获取一季度内months
+    public function getSeasonMonths(string $season = 'now', string $year = '')
+    {
+        if ($season === 'now') {
+            $season = (string)(ceil(date('n', time()) / 3));
+            $year = $year ?: date('Y');
+        }
+        switch ($season) {
+            case '1':
+                return [$year . '-' . '01', $year . '-' . '02', $year . '-' . '03'];
+            case '2':
+                return [$year . '-' . '04', $year . '-' . '05', $year . '-' . '06'];
+            case '3':
+                return [$year . '-' . '07', $year . '-' . '08', $year . '-' . '09'];
+            case '4':
+                return [$year . '-' . '10', $year . '-' . '11', $year . '-' . '12'];
+        }
+        return [];
+    }
+
     // 日期计算出年龄
     public function computeAge(string $date)
     {
@@ -240,11 +438,11 @@ class Time
         $week = date('w', $time);
         $weekName = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
         return [
-            'timestamp'  => $time,
+            'timestamp' => $time,
             'datetime_1' => date('Y-m-d H:i:s', $time),
             'datetime_2' => date('Y年m月d日 H时i分s秒', $time),
-            'week_1'     => $week,
-            'week_2'     => $weekName[(int)$week],
+            'week_1' => $week,
+            'week_2' => $weekName[(int)$week],
         ];
     }
 

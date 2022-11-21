@@ -23,8 +23,14 @@ class NumberFormat
         return (float)$number;
     }
 
-    public function toMoney($value, int $decimal = 2)
+    public function toMoney($value, int $decimal = 2): string
     {
         return $this->toString($this->toFloat($value), $decimal);
+    }
+
+    // 将小数点后面的0舍弃
+    public function discardZero($value): string
+    {
+        return rtrim(rtrim($value, '0'), '.');
     }
 }

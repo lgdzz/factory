@@ -30,7 +30,7 @@ class NumberCompute
      * @param int $decimal
      * @return string
      */
-    public function rate($dividend, $divisor, int $decimal = 2)
+    public function rate($dividend, $divisor, int $decimal = 2): string
     {
         return $this->percentToString($this->bcdiv($dividend, $divisor, $decimal));
     }
